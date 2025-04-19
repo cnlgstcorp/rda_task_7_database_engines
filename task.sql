@@ -1,3 +1,4 @@
+DROP DATABASE ShopDB;
 CREATE DATABASE ShopDB; 
 USE ShopDB; 
 
@@ -8,10 +9,33 @@ CREATE TABLE Countries (
     PRIMARY KEY (ID)
 ) ENGINE=InnoDB;
 
--- Create a table for caching GeoIP data (Columns: ID, IP Range, CountryID)
+-- Таблиця для кешування GeoIP-даних (ENGINE=MEMORY)
+CREATE TABLE GeoIPCache (
+    ID INT,
+    IPRange VARCHAR(50),
+    CountryID INT
+) ENGINE=MEMORY;
 
--- Create a table for storing product descriptions for different countries (Columns: ID, CountryID, ProductID, Description )
+-- Таблиця для описів продуктів для різних країн (ENGINE=MyISAM)
+CREATE TABLE ProductDescription (
+    ID INT,
+    Description TEXT,
+    ProductID INT,
+    CountryID INT
+) ENGINE=MyISAM;
 
--- Create a table for storing logs. For now we don't need to save them, but we need to implement functionality (Columns: ID, Time, LogRecord)
+-- Таблиця для логів (ENGINE=BLACKHOLE)
+CREATE TABLE Logs (
+    ID INT,
+    Timestamp DATETIME,
+    Message TEXT
+) ENGINE=BLACKHOLE;
 
--- Create a table for storing reporting data, which will be send to a separate application in the CSV format for analytics purposes (Columns:  Date, ProductName, Orders)
+-- Таблиця для звітності, яку буде обробляти інша система (ENGINE=CSV)
+CREATE TABLE ProductReporting (
+    Date DATE,
+    ProductName CHAR(30),
+    Orders INT
+) ENGINE=CSV;
+
+
