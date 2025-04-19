@@ -1,41 +1,43 @@
-DROP DATABASE ShopDB;
-CREATE DATABASE ShopDB; 
-USE ShopDB; 
+DROP DATABASE IF EXISTS ShopDB;
+CREATE DATABASE ShopDB;
+USE ShopDB;
 
--- Create a table to store countries 
+-- Таблиця країн (InnoDB)
 CREATE TABLE Countries (
     ID INT,
     Name VARCHAR(50),
     PRIMARY KEY (ID)
 ) ENGINE=InnoDB;
 
--- Таблиця для кешування GeoIP-даних (ENGINE=MEMORY)
+-- Таблиця кешу GeoIP (MEMORY) — вимагає PRIMARY KEY
 CREATE TABLE GeoIPCache (
-    ID INT,
+    ID INT PRIMARY KEY,
     IPRange VARCHAR(50),
     CountryID INT
 ) ENGINE=MEMORY;
 
--- Таблиця для описів продуктів для різних країн (ENGINE=MyISAM)
+-- Таблиця описів продуктів (MyISAM) — краще мати PRIMARY KEY
 CREATE TABLE ProductDescription (
-    ID INT,
+    ID INT PRIMARY KEY,
     Description TEXT,
     ProductID INT,
     CountryID INT
 ) ENGINE=MyISAM;
 
--- Таблиця для логів (ENGINE=BLACKHOLE)
+-- Таблиця логів (BLACKHOLE) — для сумісності краще мати PRIMARY KEY
 CREATE TABLE Logs (
-    ID INT,
+    ID INT PRIMARY KEY,
     Timestamp DATETIME,
     Message TEXT
 ) ENGINE=BLACKHOLE;
 
--- Таблиця для звітності, яку буде обробляти інша система (ENGINE=CSV)
+-- Таблиця для CSV-звітності — рушій CSV вимагає PRIMARY KEY
 CREATE TABLE ProductReporting (
     Date DATE,
     ProductName CHAR(30),
-    Orders INT
+    Orders INT,
+    PRIMARY KEY (Date, ProductName)
 ) ENGINE=CSV;
+
 
 
